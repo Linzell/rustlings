@@ -47,6 +47,7 @@ impl From<ParseIntError> for ParseClimateError {
 impl From<ParseFloatError> for ParseClimateError {
     fn from(e: ParseFloatError) -> Self {
         // TODO: Complete this function
+        Self::ParseFloat(e)
     }
 }
 
@@ -64,6 +65,22 @@ impl Display for ParseClimateError {
         match self {
             NoCity => write!(f, "no city name"),
             ParseFloat(e) => write!(f, "error parsing temperature: {}", e),
+            ParseInt(e) => write!(f, "error parsing year: {}", e),
+            Empty => write!(f, "no input"),
+            BadLen => write!(f, "input too short"),
+            InvalidDigit => write!(
+                f,
+                "invalid digit found in input"
+            ),
+            TooLong => write!(
+                f,
+                "input too long"
+            ),
+            TooShort => write!(
+                f,
+                "input too short"
+            ),
+            Unknown => write!(f, "unknown error"),
         }
     }
 }
@@ -96,6 +113,7 @@ impl FromStr for Climate {
         let year: u32 = year.parse()?;
         let temp: f32 = temp.parse()?;
         Ok(Climate { city, year, temp })
+        
     }
 }
 
